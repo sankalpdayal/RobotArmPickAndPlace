@@ -144,7 +144,7 @@ def test_code(test_case):
     WC = EE_pos - 0.303 * rot_mat_EE[:,2] #r - n*d
 	
 	# Calculate joint angles using Geometric IK method
-    theta1 = atan2(WC[1],WC[2])
+    theta1 = atan2(WC[1],WC[0])
 	
     def get_angles_of_triangle(len_a,len_b,len_c):
 		angle_a = acos((len_b * len_b + len_c * len_c - len_a * len_a)/(2. * len_b * len_c))
