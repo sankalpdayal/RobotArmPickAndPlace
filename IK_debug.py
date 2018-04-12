@@ -129,7 +129,7 @@ def test_code(test_case):
 						[	sin(yw),	cos(yw), 0],
 						[		  0,	      0, 1]]) #for yaw
 						
-    rot_mat_EE = rot_mat_x*rot_mat_y*rot_mat_z
+    rot_mat_EE = rot_mat_z*rot_mat_y*rot_mat_x
     
     rot_mat_error = rot_mat_z.subs(yw, radians(180)) * rot_mat_y.subs(ph, radians(-90))
 	
@@ -168,11 +168,11 @@ def test_code(test_case):
     R3_6 = R0_3.inv("LU") * rot_mat_EE
 	
     def get_euler_angles_from_rot_mat(rot_mat):
-    	roll = atan2(rot_mat[2,2], -rot_mat[0,2])
-	pitch = atan2(sqrt(rot_mat[0,2]*rot_mat[0,2] + rot_mat[2,2]*rot_mat[2,2]), rot_mat[1,2])
-	yaw = atan2(-rot_mat[1,1], rot_mat[1,0])
-	return roll, pitch, yaw
-		
+        roll = atan2(rot_mat[2,2], -rot_mat[0,2])
+        pitch = atan2(sqrt(rot_mat[0,2]*rot_mat[0,2] + rot_mat[2,2]*rot_mat[2,2]), rot_mat[1,2])
+        yaw = atan2(-rot_mat[1,1], rot_mat[1,0])
+        return roll, pitch, yaw
+
     theta4, theta5, theta6 = get_euler_angles_from_rot_mat(R3_6)
 
     ## 
