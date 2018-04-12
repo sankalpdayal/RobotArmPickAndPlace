@@ -165,7 +165,7 @@ def test_code(test_case):
 	
     R0_3 = T0_1[0:3,0:3] * T1_2[0:3,0:3] * T2_3[0:3,0:3] 
     R0_3 = R0_3.evalf(subs = {q1:theta1, q2: theta2, q3: theta3})
-    R3_6 = R0_3.inv("LU") * rot_mat_EE
+    R3_6 = R0_3.transpose() * rot_mat_EE
 	
     def get_euler_angles_from_rot_mat(rot_mat):
         roll = atan2(rot_mat[2,2], -rot_mat[0,2])
@@ -240,6 +240,6 @@ def test_code(test_case):
 
 if __name__ == "__main__":
     # Change test case number for different scenarios
-    test_case_number = 2
+    test_case_number = 3
 
     test_code(test_cases[test_case_number])
