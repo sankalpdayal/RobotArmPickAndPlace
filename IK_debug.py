@@ -135,13 +135,13 @@ def test_code(test_case):
 	
     rot_mat_EE = rot_mat_EE * rot_mat_error
 	
-    rot_mat_EE = rot_mat_EE.subs({'rl': roll, 'ph': ptich, 'yw': yaw})
+    rot_mat_EE = rot_mat_EE.subs({'rl': roll, 'ph': pitch, 'yw': yaw})
 
     EE_pos = Matrix([[px],
 					 [py],
 					 [pz]])
 	
-    WC = EE - 0.303 * rot_mat_EE[:,2] #r - n*d
+    WC = EE_pos - 0.303 * rot_mat_EE[:,2] #r - n*d
 	
 	# Calculate joint angles using Geometric IK method
     theta1 = atan2(WC[1],WC[2])
@@ -168,10 +168,10 @@ def test_code(test_case):
     R3_6 = R0_3.inv("LU") * rot_mat_EE
 	
     def get_euler_angles_from_rot_mat(rot_mat):
-	    roll = atan2(rot_mat[2,2], -rot_mat[0,2])
-		pitch = atan2(sqrt(rot_mat[0,2]*rot_mat[0,2] + rot_mat[2,2]*rot_mat[2,2]), rot_mat[1,2])
-		yaw = atan2(-rot_mat[1,1], rot_mat[1,0])
-		return roll, pitch, yaw
+    	roll = atan2(rot_mat[2,2], -rot_mat[0,2])
+	pitch = atan2(sqrt(rot_mat[0,2]*rot_mat[0,2] + rot_mat[2,2]*rot_mat[2,2]), rot_mat[1,2])
+	yaw = atan2(-rot_mat[1,1], rot_mat[1,0])
+	return roll, pitch, yaw
 		
     theta4, theta5, theta6 = get_euler_angles_from_rot_mat(R3_6)
 
@@ -182,7 +182,7 @@ def test_code(test_case):
     ## For additional debugging add your forward kinematics here. Use your previously calculated thetas
     ## as the input and output the position of your end effector as your_ee = [x,y,z]
 
-    FK = T0_EE.evalf(subs({q1: theta1, q2: theta2, q3: theta3, q4: theta4, q5: theta5, q6: theta6})
+    FK = T0_EE.evalf(subs={q1: theta1, q2: theta2, q3: theta3, q4: theta4, q5: theta5, q6: theta6})
 
     ## End your code input for forward kinematics here!
     ########################################################################################
@@ -240,6 +240,6 @@ def test_code(test_case):
 
 if __name__ == "__main__":
     # Change test case number for different scenarios
-    test_case_number = 1
+    test_case_number = 2
 
     test_code(test_cases[test_case_number])
