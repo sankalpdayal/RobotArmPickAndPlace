@@ -102,11 +102,11 @@ rot_mat_error = rot_mat_z.subs(yw, radians(180)) * rot_mat_y.subs(ph, radians(-9
 
 To solve Inverse Kinematics problem, as suggested in lectures, I decoupled it into Inverse Position Kinematics and inverse Orientation Kinematics; doing so I derived the equations to calculate all individual joint angles. 
 
-Inverse Position Kinematics:
+##### Inverse Position Kinematics:
 
 First step was to obtain the position WC (O4,O5, O6). This is obtained by subtracting the vector of link from WC to EE from position of EE. the vector of link from WC to EE is 0.33 mutliplied by the unit vector in Z direction. 
  
-Inverse Orientation Kinematics :
+##### Inverse Orientation Kinematics :
 
 Since now we know the position WC, the angle theta1 can be obtained by simlpy taking tan inverse of position y by position X. 
 
@@ -131,7 +131,7 @@ Using theta 1,2 and 3 rotation matrix can be obtained between link between 0 to 
 The implementation for calculating Inverse Kinematics based on previously performed Kinematic Analysis was first done in  done in `IK_debug.py`. Once the code resulted in successfully having almost zero error for all 3 test cases, the same code was ported to `IK_server.py` file. Code was properly commented for ease of understanding. Implementation made sure that most of symbolic math
  and constant calculations was done out of the for loop. My implementation was as follows.
 
-Out of FOR loop:
+#####  Out of FOR loop:
 
 1. Created symbols for lengths, offset and twist angles to be used in DH table.
 2. Created symbols for joining angles
@@ -142,7 +142,7 @@ Out of FOR loop:
 7. Obtained rotation matrix to compenstate for error between DH convection and urdf file and applied to symbolic rotation matrix for EE
 8. Obtained constants like angle psi and length of side A and side C.
 
-Inside FOR loop:
+##### Inside FOR loop:
 
 1. Obtained rotation matrix using the values of roll, pitch and yaw. 
 2. Obtained the position of WC using the position EE and vector length of link between EE and WC. Unit vector in Z direction is obtained using last column of rotation matrix obtained in previous step.
