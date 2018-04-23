@@ -34,7 +34,9 @@
 You're reading it!
 
 ### Kinematic Analysis
-#### 1. I ran the forward_kinematics demo and evaluated the kr210.urdf.xacro file to perform kinematic analysis of Kuka KR210 robot. I used the diagrams in the project videos and checked them against the values in kr210.urdf.xacro file
+#### 1. DH parameter assignment table
+
+I ran the forward_kinematics demo and evaluated the kr210.urdf.xacro file to perform kinematic analysis of Kuka KR210 robot. I used the diagrams in the project videos and checked them against the values in kr210.urdf.xacro file
 to derive its DH parameters. The diagrams I used are as follows
 
 DH Parameter assignment
@@ -58,23 +60,35 @@ Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 6->EE | 0 | 0 | 0.303 | 0
 
 
-#### 2. Using the DH parameter table, individual transformation matrices about each joint are created in the code using `sympy`. To this I implemented following code in `IK_server.py`. Method to create a homogeneous transformation matrix
+#### 2. Homogeneous transformation matrices creation
+
+Using the DH parameter table, individual transformation matrices about each joint are created in the code using `sympy`. To this I implemented following code in `IK_server.py`. Method to create a homogeneous transformation matrix
 
 `def create_transformation_matrix(alpha, a, d, q):
 	trans_mat = Matrix([[ 				cos(q),				-sin(q),			0,			    a],
+	
 						[ 	 sin(q)*cos(alpha),	  cos(q)*cos(alpha),  -sin(alpha),	-sin(alpha)*d],
+						
 						[ 	 sin(q)*sin(alpha),	  cos(q)*sin(alpha),   cos(alpha),	 cos(alpha)*d],
+						
 						[ 					 0,					  0,			0,			    1]])
+						
 	return trans_mat`
 	
 Code responsible for creation of different homogeneous transformation matrices between different links
 
 `T0_1 = create_transformation_matrix(alpha0, a0, d1, q1).subs(DH_Table)
+
 T1_2 = create_transformation_matrix(alpha1, a1, d2, q2).subs(DH_Table)
+
 T2_3 = create_transformation_matrix(alpha2, a2, d3, q3).subs(DH_Table)
+
 T3_4 = create_transformation_matrix(alpha3, a3, d4, q4).subs(DH_Table)
+
 T4_5 = create_transformation_matrix(alpha4, a4, d5, q5).subs(DH_Table)
+
 T5_6 = create_transformation_matrix(alpha5, a5, d6, q6).subs(DH_Table)
+
 T6_EE = create_transformation_matrix(alpha6, a6, d7, q7).subs(DH_Table)`
 
 
@@ -88,7 +102,9 @@ Code responsible for creation of this matrix is
 `rot_mat_error = rot_mat_z.subs(yw, radians(180)) * rot_mat_y.subs(ph, radians(-90))`
 
 
-#### 3. To solve Inverse Kinematics problem, as suggested in lectures, I decoupled it into Inverse Position Kinematics and inverse Orientation Kinematics; doing so I derived the equations to calculate all individual joint angles. 
+#### 3. Solving Inverse Kinematics problem
+
+To solve Inverse Kinematics problem, as suggested in lectures, I decoupled it into Inverse Position Kinematics and inverse Orientation Kinematics; doing so I derived the equations to calculate all individual joint angles. 
 
 Inverse Position Kinematics:
 
@@ -116,8 +132,7 @@ Using theta 1,2 and 3 rotation matrix can be obtained between link between 0 to 
 
 ### Project Implementation
 
-
-#### 1. The implementation for calculating Inverse Kinematics based on previously performed Kinematic Analysis was first done in  done in `IK_debug.py`. Once the code resulted in successfully having almost zero error for all 3 test cases, the same code was ported to `IK_server.py` file. Code was properly commented for ease of understanding. Implementation made sure that most of symbolic math
+The implementation for calculating Inverse Kinematics based on previously performed Kinematic Analysis was first done in  done in `IK_debug.py`. Once the code resulted in successfully having almost zero error for all 3 test cases, the same code was ported to `IK_server.py` file. Code was properly commented for ease of understanding. Implementation made sure that most of symbolic math
  and constant calculations was done out of the for loop. My implementation was as follows.
 
 Out of FOR loop:
