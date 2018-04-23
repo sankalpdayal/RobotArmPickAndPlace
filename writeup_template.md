@@ -64,12 +64,12 @@ Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 
 Using the DH parameter table, individual transformation matrices about each joint are created in the code using `sympy`. To this I implemented following code in `IK_server.py`. Method to create a homogeneous transformation matrix
 
-`def create_transformation_matrix(alpha, a, d, q):  
+```def create_transformation_matrix(alpha, a, d, q):  
 	trans_mat = Matrix([[ 				cos(q),				-sin(q),			0,			    a],  
 						[ 	 sin(q)*cos(alpha),	  cos(q)*cos(alpha),  -sin(alpha),	-sin(alpha)*d],  
 						[ 	 sin(q)*sin(alpha),	  cos(q)*sin(alpha),   cos(alpha),	 cos(alpha)*d],  
 						[ 					 0,					  0,			0,			    1]])  
-	return trans_mat`
+	return trans_mat```
 	
 Code responsible for creation of different homogeneous transformation matrices between different links
 
