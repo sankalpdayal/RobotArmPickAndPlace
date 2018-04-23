@@ -64,39 +64,39 @@ Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 
 Using the DH parameter table, individual transformation matrices about each joint are created in the code using `sympy`. To this I implemented following code in `IK_server.py`. Method to create a homogeneous transformation matrix
 
-```def create_transformation_matrix(alpha, a, d, q):  
-	trans_mat = Matrix([[ 				cos(q),				-sin(q),			0,			    a],  
-						[ 	 sin(q)*cos(alpha),	  cos(q)*cos(alpha),  -sin(alpha),	-sin(alpha)*d],  
-						[ 	 sin(q)*sin(alpha),	  cos(q)*sin(alpha),   cos(alpha),	 cos(alpha)*d],  
-						[ 					 0,					  0,			0,			    1]])  
-	return trans_mat```
+```python
+def create_transformation_matrix(alpha, a, d, q):  
+trans_mat = Matrix([[ 				cos(q),				-sin(q),			0,			    a],  
+					[ 	 sin(q)*cos(alpha),	  cos(q)*cos(alpha),  -sin(alpha),	-sin(alpha)*d],  
+					[ 	 sin(q)*sin(alpha),	  cos(q)*sin(alpha),   cos(alpha),	 cos(alpha)*d],  
+					[ 					 0,					  0,			0,			    1]])  
+return trans_mat
+```
 	
 Code responsible for creation of different homogeneous transformation matrices between different links
 
-`T0_1 = create_transformation_matrix(alpha0, a0, d1, q1).subs(DH_Table)
-
+```python
+T0_1 = create_transformation_matrix(alpha0, a0, d1, q1).subs(DH_Table)
 T1_2 = create_transformation_matrix(alpha1, a1, d2, q2).subs(DH_Table)
-
 T2_3 = create_transformation_matrix(alpha2, a2, d3, q3).subs(DH_Table)
-
 T3_4 = create_transformation_matrix(alpha3, a3, d4, q4).subs(DH_Table)
-
 T4_5 = create_transformation_matrix(alpha4, a4, d5, q5).subs(DH_Table)
-
 T5_6 = create_transformation_matrix(alpha5, a5, d6, q6).subs(DH_Table)
-
-T6_EE = create_transformation_matrix(alpha6, a6, d7, q7).subs(DH_Table)`
-
+T6_EE = create_transformation_matrix(alpha6, a6, d7, q7).subs(DH_Table)
+```
 
 In addition, I multiplied all the individual homogeneous transformation matrices to get a generalized homogeneous transform between base_link and gripper_link using only end-effector(gripper) pose. Code responsible for this is as follows
 
-`T0_EE =  T0_1*T1_2*T2_3*T3_4*T4_5*T5_6*T6_EE`
+```python
+T0_EE =  T0_1*T1_2*T2_3*T3_4*T4_5*T5_6*T6_EE`
+```
 
 In order to compensate for the difference between URDF file convecntion and DH convention which I followed, I created a transformation matrix that has to be applied to EE. This is done by rotating around Z by 180 degrees and then around y by -90 degrees.
 Code responsible for creation of this matrix is 
 
-`rot_mat_error = rot_mat_z.subs(yw, radians(180)) * rot_mat_y.subs(ph, radians(-90))`
-
+```python
+rot_mat_error = rot_mat_z.subs(yw, radians(180)) * rot_mat_y.subs(ph, radians(-90))`
+```
 
 #### 3. Solving Inverse Kinematics problem
 
