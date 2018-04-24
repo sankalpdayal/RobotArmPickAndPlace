@@ -165,4 +165,4 @@ Following image shows the inital and final position of the robot for different p
 
 Following video captures the run from start to stop for a successful pick and drop.
 
-[![Results of Robot Run](http://img.youtube.com/vi/CzpICfFCbXw/0.jpg)](http://www.youtube.com/watch?v=CzpICfFCbXw)
+[![Results of Robot Run](http://img.youtube.com/vi/hpGvvLTV8gA/0.jpg)](http://www.youtube.com/watch?v=hpGvvLTV8gA)
